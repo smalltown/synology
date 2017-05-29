@@ -5,20 +5,22 @@ from .api import Api
 
 
 class FileStation(Api):
+    cgi_path = 'entry.cgi'
+
     """Access Synology FileStation information"""
     add = 'real_path,size,owner,time,perm'
 
     def get_info(self):
         """Provide File Station information"""
         return self.req(self.endpoint('SYNO.FileStation.Info',
-                        cgi='FileStation/info.cgi', method='getinfo'))
+                                      cgi=self.cgi_path, method='getinfo'))
 
     def list_share(self, writable_only=False, limit=25, offset=0,
                    sort_by='name', sort_direction='asc', additional=False):
         """List all shared folders"""
         return self.req(self.endpoint(
             'SYNO.FileStation.List',
-            cgi='FileStation/file_share.cgi',
+            cgi=self.cgi_path,
             method='list_share',
             extra={
                 'onlywritable': writable_only,
@@ -36,7 +38,7 @@ class FileStation(Api):
         """Enumerate files in a given folder"""
         return self.req(self.endpoint(
             'SYNO.FileStation.List',
-            cgi='FileStation/file_share.cgi',
+            cgi=self.cgi_path,
             method='list',
             extra={
                 'folder_path': path,
@@ -54,7 +56,7 @@ class FileStation(Api):
         """Get information of file(s)"""
         return self.req(self.endpoint(
             'SYNO.FileStation.List',
-            cgi='FileStation/file_share.cgi',
+            cgi=self.cgi_path,
             method='getinfo',
             extra={
                 'path': path,
@@ -66,7 +68,7 @@ class FileStation(Api):
         """Search for files/folders"""
         start = self.req(self.endpoint(
             'SYNO.FileStation.Search',
-            cgi='FileStation/file_find.cgi',
+            cgi=self.cgi_path,
             method='start',
             extra={
                 'folder_path': path,
@@ -80,7 +82,7 @@ class FileStation(Api):
             time.sleep(0.5)
             file_list = self.req(self.endpoint(
                 'SYNO.FileStation.Search',
-                cgi='FileStation/file_find.cgi',
+                cgi=self.cgi_path,
                 method='list',
                 extra={
                     'taskid': start['taskid'],
@@ -102,7 +104,7 @@ class FileStation(Api):
         """
         start = self.req(self.endpoint(
             'SYNO.FileStation.DirSize',
-            cgi='FileStation/file_dirSize.cgi',
+            cgi=self.cgi_path,
             method='start',
             extra={'path': path}
         ))
@@ -113,7 +115,7 @@ class FileStation(Api):
             time.sleep(10)
             status = self.req(self.endpoint(
                 'SYNO.FileStation.DirSize',
-                cgi='FileStation/file_dirSize.cgi',
+                cgi=self.cgi_path,
                 method='status',
                 extra={'taskid': start['taskid']}
             ))
@@ -124,7 +126,7 @@ class FileStation(Api):
         """Get MD5 of a file"""
         start = self.req(self.endpoint(
             'SYNO.FileStation.MD5',
-            cgi='FileStation/file_md5.cgi',
+            cgi=self.cgi_path,
             method='start',
             extra={'file_path': path}
         ))
@@ -146,7 +148,7 @@ class FileStation(Api):
         """Check if user has permission to write to a path"""
         return self.req(self.endpoint(
             'SYNO.FileStation.CheckPermission',
-            cgi='FileStation/file_permission.cgi',
+            cgi=self.cgi_path,
             method='write',
             extra={
                 'path': path,
@@ -175,7 +177,7 @@ class FileStation(Api):
         """
         return self.req(self.endpoint(
             'SYNO.FileStation.CreateFolder',
-            cgi='FileStation/file_crtfdr.cgi',
+            cgi=self.cgi_path,
             method='create',
             extra={
                 'name': name,
@@ -189,7 +191,7 @@ class FileStation(Api):
         """Rename a file/folder"""
         return self.req(self.endpoint(
             'SYNO.FileStation.Rename',
-            cgi='FileStation/file_rename.cgi',
+            cgi=self.cgi_path,
             method='rename',
             extra={
                 'name': name,
@@ -202,7 +204,7 @@ class FileStation(Api):
         """Get thumbnail of file"""
         return self.req_binary(self.endpoint(
             'SYNO.FileStation.Thumb',
-            cgi='FileStation/file_thumb.cgi',
+            cgi=self.cgi_path,
             method='get',
             extra={
                 'path': path,
@@ -215,7 +217,7 @@ class FileStation(Api):
         """Download files/folders"""
         return self.req_binary(self.endpoint(
             'SYNO.FileStation.Download',
-            cgi='FileStation/file_download.cgi',
+            cgi=self.cgi_path,
             method='download',
             extra={
                 'path': path,
