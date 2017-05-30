@@ -71,3 +71,16 @@ filestation = FileStation(config.host, config.user, config.passwd)
 filestation.jsonprint(filestation.get_info())
 filestation.jsonprint(filestation.get_shares())
 ```
+
+## Other implementations
+
+The following projects I found on PyPI:
+
+- https://pypi.python.org/pypi/python-synology/0.1.0 ([sources](https://github.com/StaticCube/python-synology/)) Python API for communication with Synology DSM
+- https://pypi.python.org/pypi/ds-down/0.2.1 ([sources](https://github.com/wor/ds-down)) Synology Download Station url adder.
+- https://pypi.python.org/pypi/synoacl/0.0.2 ([sources](https://github.com/zub2/synoacl)) Python module for manipulating access control lists on a Synology NAS
+- https://pypi.python.org/pypi/syncli/0.0.3 Python CLI for Synology DSM.
+- https://pypi.python.org/pypi/synolopy/0.1.2 ([sources](https://github.com/thavel/synolopy)) Synology Python API
+- https://pypi.python.org/pypi/syno/0.0.3 ([sources](https://github.com/bobuk/syno)) Synology API wrapper with aiohttp/asyncio
+
+I would like to merge some of them together into one library and multiple apps using it.
