@@ -1,5 +1,7 @@
+# coding=utf-8
 import json
 import logging
+
 import requests
 
 from .errors import errors
@@ -7,7 +9,7 @@ from .utils import jsondump
 
 
 class Api:
-    def __init__(self, host, user, passwd, port='5000'):
+    def __init__(self, host, user, passwd, port = '5000'):
         self.host = host
         self.port = port
         self.user = user
@@ -22,13 +24,13 @@ class Api:
 
     def login(self):
         data = self.req(self.endpoint('SYNO.API.Info',
-                                      query='SYNO.API.Auth,SYNO.FileStation.'))
+                                      query = 'SYNO.API.Auth,SYNO.FileStation.'))
         login_endpoint = self.endpoint(
             'SYNO.API.Auth',
-            version=str(data['SYNO.API.Auth']['maxVersion']),
-            cgi=data['SYNO.API.Auth']['path'],
-            method='login',
-            extra={
+            version = str(data['SYNO.API.Auth']['maxVersion']),
+            cgi = data['SYNO.API.Auth']['path'],
+            method = 'login',
+            extra = {
                 'account': self.user,
                 'passwd': self.passwd,
                 'session': self.session_name,
@@ -43,9 +45,9 @@ class Api:
     def logout(self):
         logout_endpoint = self.endpoint(
             'SYNO.API.Auth',
-            cgi='auth.cgi',
-            method='logout',
-            extra={'session': self.session_name}
+            cgi = 'auth.cgi',
+            method = 'logout',
+            extra = {'session': self.session_name}
         )
         self.req(logout_endpoint)
 
@@ -53,8 +55,8 @@ class Api:
         ret = 'http://' + self.host + ':' + self.port + '/webapi/' + cgi
         return ret
 
-    def endpoint(self, api, query='', cgi='query.cgi', version='1', method='query', extra={}):
-        ret = self.base_endpoint(cgi) + '?api=' + api + '&version=' +version + '&method=' + method
+    def endpoint(self, api, query = '', cgi = 'query.cgi', version = '1', method = 'query', extra = {}):
+        ret = self.base_endpoint(cgi) + '?api=' + api + '&version=' + version + '&method=' + method
         if query:
             ret += '&query=' + query
 
@@ -76,18 +78,20 @@ class Api:
         r = requests.get(endpoint, **kw)
         if self.is_response_binary(r):
             if "stream" in kw:
-              return r
+                return r
             else:
-              return r.content
+                return r.content
         self.get_response_data(r)
         return None
 
     def req_post(self, endpoint, data, files):
         logging.info('url: ' + endpoint)
-        try:
-            r = requests.post(endpoint, data=data, files=files)
-        except:
-            return None
+        r = requests.post(endpoint, data = data, files = files)
+        return self.get_response_data(r)
+
+    def req_formdata(self, endpoint, data, headers):
+        logging.info('url: ' + endpoint)
+        r = requests.post(endpoint, data = data, headers = headers)
         return self.get_response_data(r)
 
     def get_response_data(self, response):
@@ -104,7 +108,8 @@ class Api:
                 return response_json['data']
             return ''
 
-        logging.error('failure - ' + str(response_json['error']['code']) +' - ' + errors[response_json['error']['code']])
+        logging.error(
+            'failure - ' + str(response_json['error']['code']) + ' - ' + errors[response_json['error']['code']])
         return jsondump(response_json['error'])
 
     def is_response_binary(self, response):
