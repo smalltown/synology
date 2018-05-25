@@ -25,6 +25,7 @@ class FileStation(Api):
             'SYNO.FileStation.List',
             cgi = self.cgi_path,
             method = 'list_share',
+            version = '2',
             extra = {
                 'onlywritable': writable_only,
                 'limit': limit,
@@ -43,6 +44,7 @@ class FileStation(Api):
             'SYNO.FileStation.List',
             cgi = self.cgi_path,
             method = 'list',
+            version = '2',
             extra = {
                 'folder_path': path,
                 'limit': limit,
@@ -285,14 +287,17 @@ class FileStation(Api):
             }
         ))
 
-    def waitForTaskFinished(self, taskid, timeout = 30, wait = 0):
-        if wait >= timeout: return {'taskid': taskid, 'success': False, 'wait': wait}
-        # print("taskid:%s ,timeout:%s ,wait:%s" % (taskid,timeout,wait))
-        self.clearBackgroundTask(taskid)
-        taskList = self.backgroundTask()
-        for task in taskList["tasks"]:
-            if task["taskid"] == taskid and not task["finished"]:
-                # print("taskid not finished")
+    def waitForTaskFinished(self, taskid, timeout = 30):
+        wait = 0
+        taskwait = {'taskid': taskid, 'success': False, 'wait': wait}
+        while wait <= timeout:
+            self.clearBackgroundTask(taskid)
+            taskList = self.backgroundTask()
+            if taskid in [t['taskid'] for t in taskList['tasks']]:
+                wait = wait + 1
+                taskwait = {'taskid': taskid, 'success': False, 'wait': wait}
                 time.sleep(1)
-                return self.waitForTaskFinished(taskid, timeout, wait + 1)
-        return {'taskid': taskid, 'success': True, 'wait': wait}
+            else:
+                taskwait = {'taskid': taskid, 'success': True, 'wait': wait}
+                break
+        return taskwait
