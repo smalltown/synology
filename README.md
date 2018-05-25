@@ -25,6 +25,8 @@ me directly.
 | SYNO.FileStation.CheckPermission | Check if the file/folder has a permission of a file/folder or not                                                                                                                                    |
 | SYNO.FileStation.Upload          | Upload a file                                                                                                                                                                                        |
 | SYNO.FileStation.Download        | Download files/folders                                                                                                                                                                               |
+| SYNO.FileStation.Extract         | Extract an archive and do operations on an archive                                                                                                                                                   |
+| SYNO.FileStation.BackgroundTask  | Get information regarding tasks of file operations which are run as the background process including copy, move, delete, compress and extract tasks or perform operations on these background tasks. |
 
 ### TODO
 
@@ -34,9 +36,7 @@ me directly.
 | SYNO.FileStation.Favorite        | Add a folder to user’s favorites or do operations on user’s favorites                                                                                                                                |
 | SYNO.FileStation.Sharing         | Generate a sharing link to share files/folders with other people and perform operations on sharing links                                                                                             |
 | SYNO.FileStation.CopyMove        | Copy/Move files/folders                                                                                                                                                                              |
-| SYNO.FileStation.Extract         | Extract an archive and do operations on an archive                                                                                                                                                   |
 | SYNO.FileStation.Compress        | Compress files/folders                                                                                                                                                                               |
-| SYNO.FileStation.BackgroundTask  | Get information regarding tasks of file operations which are run as the background process including copy, move, delete, compress and extract tasks or perform operations on these background tasks. |
 
 ## Install
 
